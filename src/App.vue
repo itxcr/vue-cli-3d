@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">css的transition动画</router-link> |
+      <router-link to="/changeSrc">替换图片资源效果</router-link>
     </div>
     <router-view/>
   </div>
@@ -18,6 +18,9 @@
 }
 
 #nav {
+  #app {
+    overflow: hidden;
+  }
   padding: 30px;
 
   a {
