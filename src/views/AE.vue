@@ -25,7 +25,7 @@ export default {
   components: {},
   data() {
     return {
-      lock: false,
+      lock: true,
       leftCurrent: 1,
       rightCurrent: 1,
       animation1: null,
@@ -103,6 +103,40 @@ export default {
       autoplay: false,
       path: './lottie/right4/data.json',
     })
+
+    this.animation1.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源1准备完毕')
+    })
+    this.animation2.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源2准备完毕')
+    })
+    this.animation3.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源3准备完毕')
+    })
+    this.animation4.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源4准备完毕')
+    })
+    this.animation5.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源5准备完毕')
+    })
+    this.animation6.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源6准备完毕')
+    })
+    this.animation7.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源7准备完毕')
+    })
+    this.animation8.addEventListener('data_ready', () => {
+      this.lock = false
+      console.log('资源8准备完毕')
+    })
+
     this.animation1.addEventListener('complete', () => {
       this.lock = false
     })
