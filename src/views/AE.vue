@@ -18,13 +18,15 @@
               @click="clickRight"
       />
     </div>
-    <div v-if="!show" style="font-size: 50px;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%)">
-      加载中...
+    <div class="process" v-if="!show">
+      <a-progress class="p" :percent="percent" :strokeWidth="18" :show-info="false" strokeColor="#1890ff"/>
     </div>
   </div>
 </template>
 <script>
 import lottie from 'lottie-web'
+import { imgList } from '@/config/preloadImg'
+
 export default {
   name: 'Home',
   components: {},
@@ -32,6 +34,8 @@ export default {
     return {
       show: false,
       lock: true,
+      count: 0,
+      percent: 0,
       leftCurrent: 1,
       rightCurrent: 1,
       animation1: null,
@@ -52,374 +56,27 @@ export default {
       animation8Show: false,
     }
   },
-  mounted() {
-    let mulitImg = [
-      'http://atlantide.top:18080/lottie/left1/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_36.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_37.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_38.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_39.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_40.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_41.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_42.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_43.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_44.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_45.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_46.jpg',
-      'http://atlantide.top:18080/lottie/left1/images/img_47.jpg',
-
-      'http://atlantide.top:18080/lottie/left2/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_36.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_37.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_38.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_39.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_40.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_41.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_42.jpg',
-      'http://atlantide.top:18080/lottie/left2/images/img_43.jpg',
-
-      'http://atlantide.top:18080/lottie/left3/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_36.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_37.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_38.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_39.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_40.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_41.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_42.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_43.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_44.jpg',
-      'http://atlantide.top:18080/lottie/left3/images/img_45.jpg',
-
-      'http://atlantide.top:18080/lottie/left4/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/left4/images/img_36.jpg',
-
-      'http://atlantide.top:18080/lottie/right1/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/right1/images/img_36.jpg',
-
-      'http://atlantide.top:18080/lottie/right2/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_36.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_37.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_38.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_39.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_40.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_41.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_42.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_43.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_44.jpg',
-      'http://atlantide.top:18080/lottie/right2/images/img_45.jpg',
-
-      'http://atlantide.top:18080/lottie/right3/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_36.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_37.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_38.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_39.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_40.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_41.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_42.jpg',
-      'http://atlantide.top:18080/lottie/right3/images/img_43.jpg',
-
-      'http://atlantide.top:18080/lottie/right4/images/img_1.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_2.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_3.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_4.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_5.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_6.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_7.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_8.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_9.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_10.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_11.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_12.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_13.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_14.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_15.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_16.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_17.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_18.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_19.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_20.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_21.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_22.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_23.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_24.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_25.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_26.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_27.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_28.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_29.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_30.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_31.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_32.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_33.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_34.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_35.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_36.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_37.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_38.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_39.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_40.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_41.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_42.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_43.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_44.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_45.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_46.jpg',
-      'http://atlantide.top:18080/lottie/right4/images/img_47.jpg',
-    ];
-    let promiseAll = [], img = [], imgTotal = mulitImg.length;
-    for(let i = 0 ; i < imgTotal ; i++){
-      promiseAll[i] = new Promise((resolve, reject)=>{
-        img[i] = new Image()
-        img[i].src = mulitImg[i]
-        img[i].onload = function(){
-          //第i张加载完成
-          resolve(img[i])
-        }
-      })
+  beforeCreate() {
+    for (let img of imgList) {
+      let image = new Image()
+      image.src = img
+      image.onload = () => {
+        this.count++
+        this.percent = Math.floor((this.count / imgList.length) * 100)
+      }
     }
-    Promise.all(promiseAll).then((img)=>{
-      this.show = true
-      this.lock = false
-    })
-
+  },
+  watch: {
+    count: function(val) {
+      if (val === imgList.length) {
+        setTimeout(() => {
+          this.lock = false
+          this.show = true
+        }, 600)
+      }
+    },
+  },
+  mounted() {
     //全部加载完成
     this.animation1 = lottie.loadAnimation({
       container: document.getElementById('left1'),// the dom element that will contain the animation
@@ -720,7 +377,7 @@ export default {
     this.animation6.destroy()
     this.animation7.destroy()
     this.animation8.destroy()
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
@@ -730,5 +387,22 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.process {
+  width: 1200px;
+  height: 675px;
+  background-image: url("../assets/1.jpg");
+  background-size: cover;
+  font-size: 50px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  .p {
+    width: 1100px;
+    margin-top: 50%;
+  }
 }
 </style>
