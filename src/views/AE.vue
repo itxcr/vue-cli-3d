@@ -134,6 +134,14 @@ export default {
       autoplay: false,
       path: './lottie/right4/data.json',
     })
+    this.animation1.setSpeed(2)
+    this.animation2.setSpeed(2)
+    this.animation3.setSpeed(2)
+    this.animation4.setSpeed(2)
+    this.animation5.setSpeed(2)
+    this.animation6.setSpeed(2)
+    this.animation7.setSpeed(2)
+    this.animation8.setSpeed(2)
 
     this.animation1.addEventListener('complete', () => {
       this.lock = false
