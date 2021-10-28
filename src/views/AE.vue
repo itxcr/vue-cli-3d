@@ -392,7 +392,8 @@ export default {
 .process {
   width: 1200px;
   height: 675px;
-  background-image: url("../assets/1.jpg");
+  background-image: url("https://cdn.jsdelivr.net/gh/itxcr/oss/images/202110281149046.jpg");
+  background-repeat: no-repeat;
   background-size: cover;
   font-size: 50px;
   position: absolute;
