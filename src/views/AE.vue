@@ -1,5 +1,5 @@
 <template>
-  <div class="border" style="z-index: 9999">
+  <div class="border" style="z-index: 9999" ref="border">
     <div v-show="show" v-swipeleft="clickLeft" v-swiperight="clickRight">
       <div id="left1" v-show="animation1Show"></div>
       <div id="left2" v-show="animation2Show"></div>
@@ -10,12 +10,12 @@
       <div id="right3" v-show="animation7Show"></div>
       <div id="right4" v-show="animation8Show"></div>
       <a-icon type="left" :style="{ fontSize: '32px', color: '#08c'}"
-              style="cursor: pointer;position: fixed;left: 5%;top:50%;"
-              @click="clickLeft"
+              style="cursor: pointer;position: absolute;left: 5%;top:50%;"
+              @click="clickRight"
       />
       <a-icon type="right" :style="{ fontSize: '32px', color: '#08c'}"
-              style="cursor: pointer;position: fixed;right: 5%;top:50%;"
-              @click="clickRight"
+              style="cursor: pointer;position: absolute;right: 5%;top:50%;"
+              @click="clickLeft"
       />
     </div>
     <div class="process" v-if="!show">
@@ -166,6 +166,34 @@ export default {
     })
     this.animation8.addEventListener('complete', () => {
       this.lock = false
+    })
+    let MouseY = 0, MouseX = 0, changeX = 0, changeY = 0
+    let X = 0, Y = 0
+    this.$refs['border'].addEventListener('mousedown', (e) => {
+      MouseX = e.clientX
+      MouseY = e.clientY
+    })
+    this.$refs['border'].addEventListener('mouseup', (e) => {
+      changeX = e.clientX
+      changeY = e.clientY
+      X = changeX - MouseX
+      Y = changeY - MouseY
+      if ((((X > 0 && Y < 0) && (X > Math.abs(Y))) || (X > 0 && Y > 0 && X > Y) || (X > 0 && Y == 0))) {
+        //右移动
+        this.clickLeft()
+      }
+          // else if (((Y > 0 && X < 0) && (Y > Math.abs(X))) || (Y > 0 && X > 0 && Y > X) || (Y > 0 && X == 0)) {//下移动
+          //   console.log('下移动')
+      // }
+      else if (((X < 0 && Y > 0) && (Math.abs(X) > Y)) || ((X < 0 && Y < 0) && (Math.abs(X) > Math.abs(Y))) || (X < 0 && Y == 0)) {//左移动
+        this.clickRight()
+      }
+      // else if (((Y < 0 && X < 0) && Math.abs(Y) > Math.abs(X)) || ((Y < 0 && X > 0) && (Math.abs(Y) > X)) || (Y < 0 && X == 0)) {//上移动
+      //   console.log('上移动')
+      // }
+      // else if (X == 0 && Y == 0) {
+      //   console.log('位置没变')
+      // }
     })
   },
   methods: {
@@ -389,14 +417,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.border {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 #left1, #left2, #left3, #left4, #right1, #right2, #right3, #right4 {
-  width: 100%;
+  width: 80%;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -413,6 +435,7 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+
   .p {
     width: 80%;
     margin-top: 50%;

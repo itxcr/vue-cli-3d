@@ -8,7 +8,6 @@ import VueTouch from '@/config/operation'
 
 Vue.config.productionTip = false
 Vue.use(Antd)
-
 Vue.directive('tap', {
   bind: function(el, binding) {
     new VueTouch(el, binding, 'tap')
