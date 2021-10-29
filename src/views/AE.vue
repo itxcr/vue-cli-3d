@@ -1,6 +1,6 @@
 <template>
-  <div class="border">
-    <div v-show="show">
+  <div class="border" style="z-index: 9999">
+    <div v-show="show" v-swipeleft="clickLeft" v-swiperight="clickRight">
       <div id="left1" v-show="animation1Show"></div>
       <div id="left2" v-show="animation2Show"></div>
       <div id="left3" v-show="animation3Show"></div>
@@ -19,7 +19,7 @@
       />
     </div>
     <div class="process" v-if="!show">
-      <a-progress class="p" :percent="percent" :strokeWidth="18" :show-info="false" strokeColor="#1890ff"/>
+      <a-progress class="p" :percent="percent" :strokeWidth="6" :show-info="false" strokeColor="#1890ff"/>
     </div>
   </div>
 </template>
@@ -389,8 +389,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.border {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 #left1, #left2, #left3, #left4, #right1, #right2, #right3, #right4 {
-  width: 1200px;
+  width: 100%;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -398,8 +404,7 @@ export default {
 }
 
 .process {
-  width: 1200px;
-  height: 675px;
+  width: 100%;
   background-image: url("https://cdn.jsdelivr.net/gh/itxcr/oss/images/202110281149046.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -408,9 +413,8 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
   .p {
-    width: 1100px;
+    width: 80%;
     margin-top: 50%;
   }
 }
