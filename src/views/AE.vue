@@ -9,14 +9,14 @@
       <div id="right2" v-show="animation6Show"></div>
       <div id="right3" v-show="animation7Show"></div>
       <div id="right4" v-show="animation8Show"></div>
-      <a-icon type="left" :style="{ fontSize: '32px', color: '#08c'}"
-              style="cursor: pointer;position: absolute;left: 5%;top:50%;"
-              @click="clickRight"
-      />
-      <a-icon type="right" :style="{ fontSize: '32px', color: '#08c'}"
-              style="cursor: pointer;position: absolute;right: 5%;top:50%;"
-              @click="clickLeft"
-      />
+      <!--      <a-icon type="left" :style="{ fontSize: '32px', color: '#08c'}"-->
+      <!--              style="cursor: pointer;position: absolute;left: 5%;top:50%;"-->
+      <!--              @click="clickRight"-->
+      <!--      />-->
+      <!--      <a-icon type="right" :style="{ fontSize: '32px', color: '#08c'}"-->
+      <!--              style="cursor: pointer;position: absolute;right: 5%;top:50%;"-->
+      <!--              @click="clickLeft"-->
+      <!--      />-->
     </div>
     <div class="process" v-if="!show">
       <a-progress class="p" :percent="percent" :strokeWidth="6" :show-info="false" strokeColor="#1890ff"/>
@@ -26,6 +26,7 @@
 <script>
 import lottie from 'lottie-web'
 import { imgList } from '@/config/preloadImg'
+import { isMobile } from '@/config/operation'
 
 export default {
   name: 'Home',
@@ -167,34 +168,49 @@ export default {
     this.animation8.addEventListener('complete', () => {
       this.lock = false
     })
-    let MouseY = 0, MouseX = 0, changeX = 0, changeY = 0
-    let X = 0, Y = 0
-    this.$refs['border'].addEventListener('mousedown', (e) => {
-      MouseX = e.clientX
-      MouseY = e.clientY
-    })
-    this.$refs['border'].addEventListener('mouseup', (e) => {
-      changeX = e.clientX
-      changeY = e.clientY
-      X = changeX - MouseX
-      Y = changeY - MouseY
-      if ((((X > 0 && Y < 0) && (X > Math.abs(Y))) || (X > 0 && Y > 0 && X > Y) || (X > 0 && Y == 0))) {
-        //右移动
-        this.clickLeft()
-      }
-          // else if (((Y > 0 && X < 0) && (Y > Math.abs(X))) || (Y > 0 && X > 0 && Y > X) || (Y > 0 && X == 0)) {//下移动
-          //   console.log('下移动')
-      // }
-      else if (((X < 0 && Y > 0) && (Math.abs(X) > Y)) || ((X < 0 && Y < 0) && (Math.abs(X) > Math.abs(Y))) || (X < 0 && Y == 0)) {//左移动
-        this.clickRight()
-      }
-      // else if (((Y < 0 && X < 0) && Math.abs(Y) > Math.abs(X)) || ((Y < 0 && X > 0) && (Math.abs(Y) > X)) || (Y < 0 && X == 0)) {//上移动
-      //   console.log('上移动')
-      // }
-      // else if (X == 0 && Y == 0) {
-      //   console.log('位置没变')
-      // }
-    })
+    if (isMobile()) {
+      let startX, startY
+      document.addEventListener('touchstart', function(e) {
+        startX = e.targetTouches[0].pageX
+        startY = e.targetTouches[0].pageY
+      })
+      document.addEventListener('touchmove', function(e) {
+        var moveX = e.targetTouches[0].pageX
+        var moveY = e.targetTouches[0].pageY
+        if (Math.abs(moveX - startX) > Math.abs(moveY - startY)) {
+          e.preventDefault()
+        }
+      }, { passive: false })
+    } else {
+      let MouseY = 0, MouseX = 0, changeX = 0, changeY = 0
+      let X = 0, Y = 0
+      this.$refs['border'].addEventListener('mousedown', (e) => {
+        MouseX = e.clientX
+        MouseY = e.clientY
+      })
+      this.$refs['border'].addEventListener('mouseup', (e) => {
+        changeX = e.clientX
+        changeY = e.clientY
+        X = changeX - MouseX
+        Y = changeY - MouseY
+        if ((((X > 0 && Y < 0) && (X > Math.abs(Y))) || (X > 0 && Y > 0 && X > Y) || (X > 0 && Y == 0))) {
+          //右移动
+          this.clickLeft()
+        }
+            // else if (((Y > 0 && X < 0) && (Y > Math.abs(X))) || (Y > 0 && X > 0 && Y > X) || (Y > 0 && X == 0)) {//下移动
+            //   console.log('下移动')
+        // }
+        else if (((X < 0 && Y > 0) && (Math.abs(X) > Y)) || ((X < 0 && Y < 0) && (Math.abs(X) > Math.abs(Y))) || (X < 0 && Y == 0)) {//左移动
+          this.clickRight()
+        }
+        // else if (((Y < 0 && X < 0) && Math.abs(Y) > Math.abs(X)) || ((Y < 0 && X > 0) && (Math.abs(Y) > X)) || (Y < 0 && X == 0)) {//上移动
+        //   console.log('上移动')
+        // }
+        // else if (X == 0 && Y == 0) {
+        //   console.log('位置没变')
+        // }
+      })
+    }
   },
   methods: {
     clickLeft() {
